@@ -4,6 +4,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <meta charset="UTF-8">
 <title>MyNotes</title>
@@ -20,7 +21,29 @@
       </ul>
     </div>
   </nav>
- <!-- Image Cards  --> 
+<div class="row" id="content-row">
+        <div class="col s4">
+            <div class="center">
+                <i class="large material-icons" style="color: #EE6E73">flash_on</i>
+                <p>Access notes faster</p>
+                <p class="light center">Get faster access to your notes</p>
+            </div>
+        </div>
+        <div class="col s4">
+            <div class="center">
+                <i class="large material-icons" style="color: orange">camera</i>
+                <p>Organized Notes</p>
+                <p class="light center">Easier to access notes no need to search for them on your system</p>
+            </div>
+        </div>
 
+        <div class="col s4">
+            <div class="center">
+                <i class="large material-icons" style="color: blue">chrome_reader_mode</i>
+                <p>A Pretty GUI</p>
+                <p class="light center">User friendly and attractive GUI</p>
+            </div>
+        </div>
+        </div>
 </body>
 </html>
