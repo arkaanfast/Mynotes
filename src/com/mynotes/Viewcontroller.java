@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
  * Servlet implementation class Viewcontroller
  */
@@ -16,16 +17,25 @@ import javax.servlet.http.HttpServletResponse;
 public class Viewcontroller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		File file = new File("/home/arkaanfast/Downloads/Module1");
-		if(!Desktop.isDesktopSupported()){
-            System.out.println("Desktop is not supported");
-            return;
-        }
-		Desktop desktop = Desktop.getDesktop();
-		if(file.exists()) {
-			desktop.open(file);
-		}
-		response.sendRedirect("studentpage.jsp");
+		
+		for(int i = 1; i <= 5; i++) {
+			String filename = request.getParameter("module_" + i);
+			System.out.println(filename);
+			File file = new File("/home/arkaanfast/Downloads/" + filename);
+			if(!Desktop.isDesktopSupported()){
+	            System.out.println("Desktop is not supported");
+	            return;
+	        }
+			Desktop desktop = Desktop.getDesktop();
+			if(file.exists()) {
+				desktop.open(file);
+				response.sendRedirect("studentpage.jsp");
+			}
+			else if(!file.exists()) {
+				System.out.println("not there");
+			}
+		}	
+		
 	}
 
 }

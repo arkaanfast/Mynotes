@@ -1,5 +1,6 @@
 package com.mynotes.dao;
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,6 +8,7 @@ import java.sql.ResultSet;
 
 
 import com.mynotes.data.Faculty;
+
 
 public class FacultyDao {
 	
@@ -60,6 +62,34 @@ public class FacultyDao {
 			System.out.println(e);
 		}
 		
+	}
+	public boolean vaildatemodule(String subject, String module) {
+		int count = 0;
+		String sql = "select * from module where Subject=?";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(url, user, password);
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, subject);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				Blob blob = rs.getBlob(module);
+				if(blob != null) {
+					count = 1;
+				}
+			}
+		
+		}
+		catch (Exception e) {
+			
+			System.out.println(e);
+		}
+		if(count == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
 

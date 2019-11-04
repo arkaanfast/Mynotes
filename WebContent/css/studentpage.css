@@ -4,8 +4,17 @@
 
 }
 
-#first{
-	margin-left: 50px;
+.row .col.m2.center{
+	margin-top: 40px;
+	margin-left: 40px;
 }
 
+#footer{
+	padding-top: 0px;
+}
+
+#footer-row{
+	margin-bottom: 0px;
+	margin-top: 158px;
+}
 

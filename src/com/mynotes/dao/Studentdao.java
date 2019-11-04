@@ -1,5 +1,7 @@
 package com.mynotes.dao;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -64,7 +66,7 @@ public class Studentdao {
     		
     	}
     	
-    	if(count > 0) {
+    	if(count == 1) {
     		return true;
     	}
     	else {
@@ -100,5 +102,23 @@ public class Studentdao {
     	}
     	
     	return s;
+    }
+    public boolean downloadvalidation(String filename) {
+    	int count = 0;
+    	File file = new File("/home/arkaanfast/Downloads/" + filename);
+    	if(!Desktop.isDesktopSupported()){
+            System.out.println("Desktop is not supported");
+            return false;
+        }
+		if(file.exists()) {
+			count = 1;
+		}
+		else if(!file.exists()) {
+			count = 0;
+		}
+		if(count == 1) {
+			return true;
+		}
+		return false;
     }
 }

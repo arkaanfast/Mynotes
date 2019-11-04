@@ -3,6 +3,7 @@ package com.mynotes;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,80 +30,81 @@ public class Downloadcontroller extends HttpServlet {
 	 String user = "user";
 	 String password = "user";
 	
-	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 
-		 //int column_no = 0;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
+	
 		 String subject = request.getParameter("subject");
 		 for(int i = 1; i <= 5; i++) {
 			 String module = "module" + i;
 			 System.out.println(module);
-			 if(request.getParameter(module) != null) {
-			 String filename = request.getParameter(module);
-			 System.out.println(filename);
-			 char no = filename.charAt(6);
-			 int module_no =Character.getNumericValue(no);
-		     System.out.println(module_no);
-//		 switch (module_no) {
-//		 	case 1:column_no = 3;
-//		 	break;
-//		 	case 2:column_no = 4;
-// 			break;
-//		 	case 3:column_no = 5;
-// 			break;
-//		 	case 4:column_no = 6;
-// 			break;
-//		 	case 5:column_no = 7;
-// 			break;
-//		}
-		 System.out.println(module_no);
-		 
-		 
-		 try {
-    		
-    		Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection(url, user, password);
-			String sql = "Select module_? from module where Subject=?";
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setInt(1, module_no);
-			ps.setString(2, subject);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				Blob blob = rs.getBlob(module_no);
-				InputStream inputStream = blob.getBinaryStream();
-				int fileLength = inputStream.available();
-				ServletContext context = getServletContext();
-	                String mimeType = context.getMimeType(filename);
-	                if (mimeType == null) {        
-	                    mimeType = "application/octet-stream";
-	                }
-	                response.setContentType(mimeType);
-	                response.setContentLength(fileLength);
-	                String headerKey = "Content-Disposition";
-	                String headerValue = String.format("attachment; filename=\"%s\"", filename);
-	                response.setHeader(headerKey, headerValue);
-	                OutputStream outStream = response.getOutputStream();
-	                 
-	                byte[] buffer = new byte[BUFFER_SIZE];
-	                int bytesRead = -1;
-	                 
-	                while ((bytesRead = inputStream.read(buffer)) != -1) {
-	                    outStream.write(buffer, 0, bytesRead);
-	                }
-	                 
-	                inputStream.close();
-	                outStream.close();             
-	            } else {
-	                // no file found
-	                response.getWriter().print("File not found for the id: ");  
-	            }
+			 if(request.getParameter(module) == null){
+				 continue;
 			 }
+			 else {
+				 String module_for_db = "module_" + i;
+				 String filename = request.getParameter(module);
+				 System.out.println(filename);
+				 char no = filename.charAt(6);
+				 System.out.println(module);
+				 int module_no =Character.getNumericValue(no);
+				 System.out.println(module_no);
+				 try {
+					 Class.forName("com.mysql.cj.jdbc.Driver");
+					 Connection con = DriverManager.getConnection(url, user, password);
+					 String sql = "Select * from module where Subject=?";
+					 PreparedStatement ps = con.prepareStatement(sql);
+					 ps.setString(1, subject);
+					 ResultSet rs = ps.executeQuery();
+					 if(rs.next()){
+						System.out.println("after entering if loop");
+					 	Blob blob = rs.getBlob(module_for_db);
+					 	System.out.println(blob);
+					 	if(blob == null) {
+					 		PrintWriter pw = response.getWriter();
+					 		pw.print("module not uploaded yet :)");
+					 	}
+					 	InputStream inputStream = blob.getBinaryStream();
+					 	int fileLength = inputStream.available();
+					 	System.out.println("y");
+					 	ServletContext context = getServletContext();
+					 	System.out.println("n");
+					 	String mimeType = context.getMimeType(filename);
+					 	System.out.println("w");
+					 	System.out.println(mimeType);
+					 	System.out.println("after mime");
+					 	//if (mimeType == null) {        
+					 		mimeType = "application/octet-stream";
+					 	//}
+					 	response.setContentType(mimeType);
+					 	response.setContentLength(fileLength);
+					 	String headerKey = "Content-Disposition";
+					 	String headerValue = String.format("attachment; filename=\"%s\"", filename);
+					 	response.setHeader(headerKey, headerValue);
+					 	OutputStream outStream = response.getOutputStream();
+	                 
+					 	byte[] buffer = new byte[BUFFER_SIZE];
+					 	int bytesRead = -1;
+	                 
+					 	while ((bytesRead = inputStream.read(buffer)) != -1) {
+					 		outStream.write(buffer, 0, bytesRead);
+					 	}
+	                 
+					 	inputStream.close();
+					 	outStream.close();             
+					 	} else {
+					 		// no file found
+					 		response.getWriter().print("File not found for the id: ");  
+					 	}
+				 }
 			 
-		catch(Exception e) {
+				 catch(Exception e) {
     		
-    		System.out.println(e);
+					 System.out.println(e);
     	
-    		}
+				 }
+				 break;
 }
+			
 }
 	 }
 }

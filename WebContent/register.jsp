@@ -10,9 +10,10 @@
 <title>Register</title>
 </head>
 <body>
-<div class="card grey darken-1" id="main-header">
+<div class="card blue-grey darken-1" id="main-header">
         <div class="card-content white-text">       
-        <span class="card-title">Registration</span>    
+        <span class="card-title">Registration</span> 
+        
         <% if(session.getAttribute("error") == "error") { %>
         
         	<h6><b style="color: red; font: 30px;">The password entered does not match</b></h6>
@@ -22,7 +23,7 @@
         	
        		<h6><b style="color: red; font: 30px;">Successfully registered signup to continue </b></h6> 	
         	<% session.removeAttribute("success"); %>
-        
+        	 <a href="signin.jsp">Sign In</a>
         <% } %>
     </div>
    </div>
